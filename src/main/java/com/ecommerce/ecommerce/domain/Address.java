@@ -19,7 +19,7 @@ public class Address {
     private String state;
     private String cep;
 
-    @OneToOne(cascade = CascadeType.ALL) //ligação das operações entre as tabelas
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne      //ligação das operações entre as tabelas
+    @JoinColumn(name = "client_id")
     private Client client;
 }

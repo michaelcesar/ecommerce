@@ -11,14 +11,10 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Client Request DTO")
 public class ClientRequestDTO {
 
-    @Schema(description = "Client name", example = "John Doe")
-    @NotBlank(message = "Nome é obrigatório")
-    private String name;
-
-    @Schema(description = "Client email", example = "john.doe@example.com")
+    @Schema(description = "Client email", example = "michael@example.com")
     @Email(message = "Email deve ser válido")
     private String email;
 
-    @Schema(description = "Client phone number", example = "+1-202-555-0173")
-    private String phone;
+    @Schema(description = "Client password", example = "123")
+    private String password;
 }

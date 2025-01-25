@@ -1,9 +1,8 @@
-package com.ecommerce.ecommerce.service;
+package com.ecommerce.ecommerce.services;
 
 import com.ecommerce.ecommerce.domain.Client;
 import com.ecommerce.ecommerce.domain.DTOS.ClientRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.ClientResponseDTO;
-import com.ecommerce.ecommerce.domain.Order;
 import com.ecommerce.ecommerce.mapper.ClientMapper;
 import com.ecommerce.ecommerce.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;

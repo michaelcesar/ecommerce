@@ -3,7 +3,7 @@ package com.ecommerce.ecommerce.controller;
 import com.ecommerce.ecommerce.domain.Client;
 import com.ecommerce.ecommerce.domain.DTOS.ClientRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.ClientResponseDTO;
-import com.ecommerce.ecommerce.service.ClientService;
+import com.ecommerce.ecommerce.services.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,7 +42,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> getClientById(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
-        ClientResponseDTO responseDTO = ClientMapper.toClientResponseDTO(client);
+        ClientResponseDTO responseDTO = clientMapper.toClientResponseDTO(client);
         return ResponseEntity.ok(responseDTO);
     }
 
