@@ -21,6 +21,12 @@ public class OrderResponseDTO {
     @Schema(description = "Total value of the order", example = "250.75")
     private BigDecimal totalValue;
 
+    @Schema(description = "Order status", example = "PAID")
+    private String orderStatus;
+
+    @Schema(description = "Order status description", example = "Pago")
+    private String orderStatusDescription;
+
     @Schema(description = "Client ID associated with the order", example = "1")
     private Long clientId;
 }

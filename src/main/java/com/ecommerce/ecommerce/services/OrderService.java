@@ -1,0 +1,67 @@
+package com.ecommerce.ecommerce.services;
+
+import com.ecommerce.ecommerce.domain.Client;
+import com.ecommerce.ecommerce.domain.Order;
+import com.ecommerce.ecommerce.domain.DTOS.OrderRequestDTO;
+import com.ecommerce.ecommerce.domain.enums.OrderStatus;
+import com.ecommerce.ecommerce.repository.ClientRepository;
+import com.ecommerce.ecommerce.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class OrderService {
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    public Order createOrder(OrderRequestDTO orderRequestDTO) {
+        Client client = clientRepository.findById(orderRequestDTO.getClientId())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+        Order order = new Order();
+        order.setOrderDate(orderRequestDTO.getOrderDate());
+        order.setTotalValue(orderRequestDTO.getTotalValue());
+        order.setClient(client);
+        order.setOrderStatus(OrderStatus.PENDING);
+
+        return orderRepository.save(order);
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
+    }
+
+    public Order updateOrderStatus(Long id, String status) {
+        Order order = getOrderById(id);
+
+        try {
+            OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+            order.setOrderStatus(orderStatus);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Status inválido. Use um dos seguintes: " +
+                    String.join(", ",
+                            java.util.Arrays.stream(OrderStatus.values())
+                                    .map(OrderStatus::name)
+                                    .toList()));
+        }
+
+        return orderRepository.save(order);
+    }
+
+    public List<Order> getOrdersByClientId(Long clientId) {
+        return orderRepository.findAll().stream()
+                .filter(order -> order.getClient().getId().equals(clientId))
+                .toList();
+    }
+}

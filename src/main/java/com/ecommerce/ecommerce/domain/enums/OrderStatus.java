@@ -1,7 +1,7 @@
 package com.ecommerce.ecommerce.domain.enums;
 
 public enum OrderStatus {
-    WAITING_PAYMENT ("Aguardando pagamento"),
+    PENDING ("Aguardando pagamento"),
     PAID ("Pago"),
     SHIPPED("Enviado"),
     DELIVERED("Entregue"),
