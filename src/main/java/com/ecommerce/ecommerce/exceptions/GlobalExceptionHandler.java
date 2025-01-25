@@ -1,8 +1,8 @@
 package com.ecommerce.ecommerce.exceptions;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,13 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @Getter
-    @Builder
     @AllArgsConstructor
+    @Builder
     public static class ErrorResponse {
         private LocalDateTime timestamp;
         private Integer status;
         private String message;
         private String path;
-
-        public ErrorResponse(String message) {
-            this.timestamp = LocalDateTime.now();
-            this.message = message;
-        }
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
