@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,6 +18,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
+    private String name;
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
@@ -30,7 +35,7 @@ public class Order {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    /*@OneToMany(mappedBy = "order")
-    private List<orderItem> items = new ArrayList<>();*/
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items = new ArrayList<>();
 }
 

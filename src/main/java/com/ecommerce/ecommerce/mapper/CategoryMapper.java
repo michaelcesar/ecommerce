@@ -1,10 +1,7 @@
 package com.ecommerce.ecommerce.mapper;
 import com.ecommerce.ecommerce.domain.Category;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryResponseDTO;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -23,6 +20,6 @@ public interface CategoryMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "products", ignore = true)
-    void updateCategory(CategoryResponseDTO categoryResponseDTO, Category category);
+    Category toUpdateCategory(CategoryResponseDTO categoryResponseDTO, @MappingTarget Category category);
 
 }

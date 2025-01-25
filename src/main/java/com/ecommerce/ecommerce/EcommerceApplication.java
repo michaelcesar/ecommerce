@@ -3,7 +3,7 @@ package com.ecommerce.ecommerce;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.ecommerce")
 public class EcommerceApplication {
 
 	public static void main(String[] args) {

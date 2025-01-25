@@ -16,6 +16,9 @@ public class OrderItem {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private Integer quantity;
 
     @Column
@@ -25,8 +28,8 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    /*@ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private Product product;*/
+    private Product product;
 
 }
