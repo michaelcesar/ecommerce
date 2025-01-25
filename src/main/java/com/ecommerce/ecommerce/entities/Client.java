@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -24,18 +23,15 @@ public class Client {
     private String password;
 
     @Column
-    private String address;
-
-    @Column
     private String cpf;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-   /* @OneToOne(mappedBy = "client")
-    private Adress adress;
+    @OneToOne(mappedBy = "client")
+    private Address address;
 
-    @OneToMany(mappedBy = "client")
+    /*@OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();*/
     }
