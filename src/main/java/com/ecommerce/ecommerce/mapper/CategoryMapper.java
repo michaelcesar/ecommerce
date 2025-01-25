@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.mapper;
 import com.ecommerce.ecommerce.domain.Category;
+import com.ecommerce.ecommerce.domain.DTOS.CategoryRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryResponseDTO;
 import org.mapstruct.*;
 
@@ -10,10 +11,13 @@ public interface CategoryMapper {
 
     CategoryResponseDTO toCategoryDTO(Category category);
 
-
     @Mapping(target = "products", ignore = true)
     @Mapping(target = "id", ignore = true)
     Category toCategory(CategoryResponseDTO categoryResponseDTO);
+
+    @Mapping(target = "products", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    Category toCategory(CategoryRequestDTO categoryRequestDTO);
 
     List<CategoryResponseDTO> toCategoryDTOList(List<Category> categories);
 
@@ -21,5 +25,4 @@ public interface CategoryMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "products", ignore = true)
     Category toUpdateCategory(CategoryResponseDTO categoryResponseDTO, @MappingTarget Category category);
-
 }
