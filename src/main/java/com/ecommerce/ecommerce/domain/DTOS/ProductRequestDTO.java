@@ -27,6 +27,5 @@ public class ProductRequestDTO {
     private BigDecimal price;
 
     @Schema(description = "Product category ID", example = "1")
-    @NotNull(message = "Categoria do produto é obrigatória")
     private Long categoryId;
 }

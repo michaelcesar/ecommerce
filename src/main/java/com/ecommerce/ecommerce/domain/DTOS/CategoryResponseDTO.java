@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Schema(description = "Category Response DTO")
@@ -17,4 +19,8 @@ public class CategoryResponseDTO {
 
     @Schema(description = "Category description", example = "Electronic devices")
     private String description;
+
+    @Schema(description = "Category products")
+    private List<ProductResponseDTO> products;
+
 }

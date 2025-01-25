@@ -25,10 +25,15 @@ public class ProductService {
             throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
         }
 
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada"));
+        if (categoryId != null) {
+            Category category = categoryRepository.findById(categoryId)
+                    .orElse(null);
 
-        product.getCategories().add(category);
+            if (category != null) {
+                product.getCategories().add(category);
+            }
+        }
+
         return productRepository.save(product);
     }
 

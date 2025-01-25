@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
 
+    @Mapping(target = "categoryName", expression = "java(product.getCategories() != null && !product.getCategories().isEmpty() ? product.getCategories().get(0).getName() : null)")
     ProductResponseDTO toProductResponseDTO(Product product);
 
     Product toProduct(ProductRequestDTO productRequestDTO);
@@ -19,3 +20,4 @@ public interface ProductMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProductFromDTO(ProductRequestDTO productRequestDTO, @MappingTarget Product product);
 }
+

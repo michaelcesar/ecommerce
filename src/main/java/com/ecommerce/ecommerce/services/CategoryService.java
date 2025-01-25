@@ -5,6 +5,7 @@ import com.ecommerce.ecommerce.domain.Product;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryRequestDTO;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +45,22 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    public void addProductToCategory(Long categoriaId, Long produtoId) {
-        var category = getCategoryById(categoriaId);
-        var product = productRepository.findById(produtoId)
+    @Transactional
+    public Category addProductToCategory(Long categoryId, Long productId) {
+        var category = getCategoryById(categoryId);
+        var product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
-        category.getProducts().add(product);
-        categoryRepository.save(category);
+
+        if (!category.getProducts().contains(product)) {
+            category.getProducts().add(product);
+        }
+
+        if (!product.getCategories().contains(category)) {
+            product.getCategories().add(category);
+        }
+
+        productRepository.save(product);
+        return categoryRepository.save(category);
     }
 
     public void removeProductFromCategory(Long categoriaId, Long produtoId) {

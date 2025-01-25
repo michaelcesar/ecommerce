@@ -51,15 +51,16 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{categoriaId}/produtos/{produtoId}")
-    public ResponseEntity<Void> addProductToCategory(@PathVariable Long categoryId, @PathVariable Long produtoId) {
-        categoryService.addProductToCategory(categoryId, produtoId);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/{categoryId}/produtos/{productId}")
+    public ResponseEntity<CategoryResponseDTO> addProductToCategory(@PathVariable Long categoryId, @PathVariable Long productId) {
+        var updatedCategory = categoryService.addProductToCategory(categoryId, productId);
+        var responseDTO = categoryMapper.toCategoryDTO(updatedCategory);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping("/{categoriaId}/produtos/{produtoId}")
-    public ResponseEntity<Void> removeProductFromCategory(@PathVariable Long categoryId, @PathVariable Long produtoId) {
-        categoryService.removeProductFromCategory(categoryId, produtoId);
+    @DeleteMapping("/{categoryId}/produtos/{productId}")
+    public ResponseEntity<Void> removeProductFromCategory(@PathVariable Long categoryId, @PathVariable Long productId) {
+        categoryService.removeProductFromCategory(categoryId, productId);
         return ResponseEntity.noContent().build();
     }
 }
