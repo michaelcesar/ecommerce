@@ -15,21 +15,21 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String name;
-
-    @Column
+    @Column(nullable = false)
     private Integer quantity;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
+    @Column(nullable = false)
+    private BigDecimal subtotal;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
 }
+

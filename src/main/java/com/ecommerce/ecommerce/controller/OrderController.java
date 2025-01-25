@@ -2,9 +2,11 @@ package com.ecommerce.ecommerce.controller;
 
 import com.ecommerce.ecommerce.domain.DTOS.OrderRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.OrderResponseDTO;
+import com.ecommerce.ecommerce.domain.Order;
 import com.ecommerce.ecommerce.domain.enums.OrderStatus;
 import com.ecommerce.ecommerce.mapper.OrderMapper;
 import com.ecommerce.ecommerce.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,8 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        var order = orderService.createOrder(orderRequestDTO);
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody @Valid OrderRequestDTO orderRequestDTO) {
+        Order order = orderService.createOrder(orderRequestDTO);
         return ResponseEntity.ok(orderMapper.toOrderResponseDTO(order));
     }
 

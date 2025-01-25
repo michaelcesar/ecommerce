@@ -3,12 +3,17 @@ package com.ecommerce.ecommerce.services;
 import com.ecommerce.ecommerce.domain.Client;
 import com.ecommerce.ecommerce.domain.Order;
 import com.ecommerce.ecommerce.domain.DTOS.OrderRequestDTO;
+import com.ecommerce.ecommerce.domain.OrderItem;
+import com.ecommerce.ecommerce.domain.Product;
 import com.ecommerce.ecommerce.domain.enums.OrderStatus;
 import com.ecommerce.ecommerce.repository.ClientRepository;
 import com.ecommerce.ecommerce.repository.OrderRepository;
+import com.ecommerce.ecommerce.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,15 +25,38 @@ public class OrderService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public Order createOrder(OrderRequestDTO orderRequestDTO) {
-        Client client = clientRepository.findById(orderRequestDTO.getClientId())
-                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Transactional
+    public Order createOrder(OrderRequestDTO requestDTO) {
 
         Order order = new Order();
-        order.setOrderDate(orderRequestDTO.getOrderDate());
-        order.setTotalValue(orderRequestDTO.getTotalValue());
+        order.setOrderDate(requestDTO.getOrderDate());
+
+        Client client = clientRepository.findById(requestDTO.getClientId())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
         order.setClient(client);
-        order.setOrderStatus(OrderStatus.PENDING);
+
+        List<OrderItem> items = requestDTO.getItems().stream().map(itemDTO -> {
+            Product product = productRepository.findById(itemDTO.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+
+            OrderItem item = new OrderItem();
+            item.setOrder(order);
+            item.setProduct(product);
+            item.setPrice(product.getPrice());
+            item.setQuantity(itemDTO.getQuantity());
+            item.setSubtotal(product.getPrice().multiply(new BigDecimal(itemDTO.getQuantity())));
+            return item;
+        }).toList();
+
+        order.setItems(items);
+
+        BigDecimal totalValue = items.stream()
+                .map(OrderItem::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotalValue(totalValue);
 
         return orderRepository.save(order);
     }
