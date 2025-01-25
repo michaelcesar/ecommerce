@@ -1,6 +1,6 @@
-package com.ecommerce.ecommerce.entities;
+package com.ecommerce.ecommerce.domain;
 
-import com.ecommerce.ecommerce.entities.enums.OrderStatus;
+import com.ecommerce.ecommerce.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

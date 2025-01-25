@@ -1,9 +1,8 @@
-package com.ecommerce.ecommerce.entities;
+package com.ecommerce.ecommerce.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 
 import java.math.BigDecimal;
 

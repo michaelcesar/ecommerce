@@ -1,11 +1,10 @@
-package com.ecommerce.ecommerce.entities;
+package com.ecommerce.ecommerce.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Entity
 @Data
