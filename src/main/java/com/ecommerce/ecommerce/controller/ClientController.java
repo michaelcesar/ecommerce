@@ -17,7 +17,7 @@ import com.ecommerce.ecommerce.mapper.ClientMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/cliente")
 public class ClientController {
 
     @Autowired
