@@ -34,10 +34,12 @@ public class ClientController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar todos os clientes (com paginação)")
-    public ResponseEntity<Page<ClientResponseDTO>> getAllClients(Pageable pageable) {
-        return ResponseEntity.ok(clientService.getAllClients(pageable));
+    public ResponseEntity<Page<ClientResponseDTO>> getAllClients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(clientService.getAllClients(page, size));
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponseDTO> getClientById(@PathVariable Long id) {

@@ -8,6 +8,7 @@ import com.ecommerce.ecommerce.repository.ClientRepository;
 import com.ecommerce.ecommerce.utils.CPFValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class ClientService {
         return clientMapper.toClientResponseDTO(savedClient);
     }
 
-    public Page<ClientResponseDTO> getAllClients(Pageable pageable) {
+    public Page<ClientResponseDTO> getAllClients(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return clientRepository.findAll(pageable).map(clientMapper::toClientResponseDTO);
     }
 
