@@ -56,6 +56,11 @@ public class ClientService {
     public void deleteClient(Long id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Não foi possível excluir o cliente porque ele não foi encontrado."));
+
+        boolean hasOrders = clientRepository.existsByIdAndOrdersNotEmpty(id);
+        if (hasOrders) {
+            throw new RuntimeException("Não é possível excluir o cliente porque ele possui pedidos.");
+        }
         clientRepository.delete(client);
     }
 
