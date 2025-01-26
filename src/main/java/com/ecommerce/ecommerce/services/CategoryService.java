@@ -21,6 +21,10 @@ public class CategoryService {
     private ProductRepository productRepository;
 
     public Category createCategory(Category category) {
+        if (categoryRepository.existsByName(category.getName())) {
+            throw new IllegalArgumentException("O nome da categoria já existe no sistema.");
+        }
+
         return categoryRepository.save(category);
     }
 
@@ -41,7 +45,13 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        var category = getCategoryById(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada."));
+
+        if (!category.getProducts().isEmpty()) {
+            throw new IllegalArgumentException("Não é possível remover a categoria. Existem produtos associados a mesma.");
+        }
+
         categoryRepository.delete(category);
     }
 
