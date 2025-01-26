@@ -24,35 +24,35 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody @Valid OrderRequestDTO orderRequestDTO) {
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         Order order = orderService.createOrder(orderRequestDTO);
         return ResponseEntity.ok(orderMapper.toOrderResponseDTO(order));
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
-        var orders = orderService.getAllOrders();
+        List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orderMapper.toOrderResponseDTOList(orders));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
-        var order = orderService.getOrderById(id);
-        return ResponseEntity.ok(orderMapper.toOrderResponseDTO(order));
+        OrderResponseDTO responseDTO = orderService.getOrderById(id);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateOrderStatus(
             @PathVariable Long id,
-            @RequestParam OrderStatus status) {
-        var updatedOrder = orderService.updateOrderStatus(id, String.valueOf(status));
-        var responseDTO = orderMapper.toOrderResponseDTO(updatedOrder);
-        return ResponseEntity.ok(responseDTO);
+            @RequestParam String status) {
+        Order updatedOrder = orderService.updateOrderStatus(id, status);
+        return ResponseEntity.ok(orderMapper.toOrderResponseDTO(updatedOrder));
     }
 
     @GetMapping("/cliente/{clientId}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByClient(@PathVariable Long clientId) {
-        var orders = orderService.getOrdersByClientId(clientId);
-        return ResponseEntity.ok(orderMapper.toOrderResponseDTOList(orders));
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByClientId(@PathVariable Long clientId) {
+        List<Order> orders = orderService.getOrdersByClientId(clientId);
+        List<OrderResponseDTO> responseDTOs = orderMapper.toOrderResponseDTOList(orders);
+        return ResponseEntity.ok(responseDTOs);
     }
 }

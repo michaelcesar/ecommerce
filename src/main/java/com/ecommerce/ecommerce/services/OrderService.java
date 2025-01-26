@@ -1,12 +1,14 @@
 package com.ecommerce.ecommerce.services;
 
 import com.ecommerce.ecommerce.domain.Client;
+import com.ecommerce.ecommerce.domain.DTOS.OrderResponseDTO;
 import com.ecommerce.ecommerce.domain.Order;
 import com.ecommerce.ecommerce.domain.DTOS.OrderRequestDTO;
 import com.ecommerce.ecommerce.domain.OrderItem;
 import com.ecommerce.ecommerce.domain.Product;
 import com.ecommerce.ecommerce.domain.enums.OrderStatus;
 import com.ecommerce.ecommerce.repository.ClientRepository;
+import com.ecommerce.ecommerce.mapper.OrderMapper;
 import com.ecommerce.ecommerce.repository.OrderRepository;
 import com.ecommerce.ecommerce.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -28,6 +30,9 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderMapper orderMapper;
+
     @Transactional
     public Order createOrder(OrderRequestDTO requestDTO) {
 
@@ -41,6 +46,10 @@ public class OrderService {
         List<OrderItem> items = requestDTO.getItems().stream().map(itemDTO -> {
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+
+            if (product.getPrice() == null) {
+                throw new IllegalArgumentException("O produto deve ter um preço válido.");
+            }
 
             OrderItem item = new OrderItem();
             item.setOrder(order);
@@ -58,6 +67,8 @@ public class OrderService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotalValue(totalValue);
 
+        order.setOrderStatus(OrderStatus.PENDING);
+
         return orderRepository.save(order);
     }
 
@@ -65,13 +76,15 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id)
+    public OrderResponseDTO getOrderById(Long id) {
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
+        return orderMapper.toOrderResponseDTO(order);
     }
 
     public Order updateOrderStatus(Long id, String status) {
-        Order order = getOrderById(id);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
         try {
             OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());

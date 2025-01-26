@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,4 +30,7 @@ public class OrderResponseDTO {
 
     @Schema(description = "Client ID associated with the order", example = "1")
     private Long clientId;
+
+    @Schema(description = "Items of the order")
+    private List<OrderItemResponseDTO> items;
 }
