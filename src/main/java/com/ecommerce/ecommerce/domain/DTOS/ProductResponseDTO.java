@@ -23,6 +23,9 @@ public class ProductResponseDTO {
     @Schema(description = "Product price", example = "799.99")
     private BigDecimal price;
 
+    @Schema(description = "Product quantity", example = "10")
+    private Integer quantity;
+
     @Schema(description = "Product category name", example = "Electronics")
     private String categoryName;
 }

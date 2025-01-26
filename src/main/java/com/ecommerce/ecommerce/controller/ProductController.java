@@ -4,6 +4,7 @@ import com.ecommerce.ecommerce.domain.DTOS.ProductRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.ProductResponseDTO;
 import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ProductController {
     private ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         var product = productMapper.toProduct(productRequestDTO);
         var savedProduct = productService.createProduct(product, productRequestDTO.getCategoryId());
         return ResponseEntity.ok(productMapper.toProductResponseDTO(savedProduct));

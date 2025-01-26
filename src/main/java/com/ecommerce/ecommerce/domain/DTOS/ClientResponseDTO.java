@@ -18,6 +18,9 @@ public class ClientResponseDTO {
     @Schema(description = "Client email", example = "john.doe@example.com")
     private String email;
 
-    @Schema(description = "Client phone number", example = "+1-202-555-0173")
-    private String phone;
+   /* @Schema(description = "Client phone number", example = "+1-202-555-0173")
+    private String phone;*/
+
+    @Schema(description = "Client cpf", example = "000.000.000-00")
+    private String cpf;
 }

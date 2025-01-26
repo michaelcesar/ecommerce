@@ -35,7 +35,6 @@ public class OrderService {
 
     @Transactional
     public Order createOrder(OrderRequestDTO requestDTO) {
-
         Order order = new Order();
         order.setOrderDate(requestDTO.getOrderDate());
 
@@ -47,9 +46,14 @@ public class OrderService {
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
 
-            if (product.getPrice() == null) {
-                throw new IllegalArgumentException("O produto deve ter um preço válido.");
+            //verificação
+            if (product.getQuantity() < itemDTO.getQuantity()) {
+                throw new IllegalArgumentException("Estoque insuficiente para o produto: " + product.getName());
             }
+
+            //atualizar meu estoque
+            product.setQuantity(product.getQuantity() - itemDTO.getQuantity());
+            productRepository.save(product);
 
             OrderItem item = new OrderItem();
             item.setOrder(order);
@@ -60,14 +64,16 @@ public class OrderService {
             return item;
         }).toList();
 
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("O pedido deve ter pelo menos um item.");
+        }
+
         order.setItems(items);
 
         BigDecimal totalValue = items.stream()
                 .map(OrderItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotalValue(totalValue);
-
-        order.setOrderStatus(OrderStatus.PENDING);
 
         return orderRepository.save(order);
     }

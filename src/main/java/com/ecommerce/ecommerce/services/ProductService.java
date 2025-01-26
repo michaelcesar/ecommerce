@@ -25,6 +25,10 @@ public class ProductService {
             throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
         }
 
+        if (product.getQuantity() == null || product.getQuantity() <= 0) {
+            throw new IllegalArgumentException("A quantidade do produto deve ser maior que zero.");
+        }
+
         if (categoryId != null) {
             Category category = categoryRepository.findById(categoryId)
                     .orElse(null);
