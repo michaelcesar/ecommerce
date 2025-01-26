@@ -1,10 +1,14 @@
 package com.ecommerce.ecommerce.services;
 
+import com.ecommerce.ecommerce.domain.DTOS.ProductResponseDTO;
 import com.ecommerce.ecommerce.domain.Product;
 import com.ecommerce.ecommerce.domain.Category;
+import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.repository.ProductRepository;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,6 +22,9 @@ public class ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductMapper productMapper;
 
     public Product createProduct(Product product, Long categoryId) {
 
@@ -46,8 +53,9 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<ProductResponseDTO> getAllProducts(Pageable pageable, String name, BigDecimal minPrice, BigDecimal maxPrice) {
+        Page<Product> products = productRepository.findAllByFilters(pageable, name, minPrice, maxPrice);
+        return products.map(productMapper::toProductResponseDTO);
     }
 
     public Product updateProduct(Long id, Product updatedProduct) {

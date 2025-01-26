@@ -6,9 +6,13 @@ import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -29,9 +33,16 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        var products = productService.getAllProducts();
-        return ResponseEntity.ok(productMapper.toProductResponseDTOList(products));
+    public ResponseEntity<Page<ProductResponseDTO>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductResponseDTO> products = productService.getAllProducts(pageable, name, minPrice, maxPrice);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
