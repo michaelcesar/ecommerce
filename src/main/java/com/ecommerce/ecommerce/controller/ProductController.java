@@ -5,6 +5,8 @@ import com.ecommerce.ecommerce.domain.DTOS.ProductResponseDTO;
 import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.services.ProductService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,8 @@ public class ProductController {
 
     @Autowired
     private ProductMapper productMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {

@@ -6,6 +6,8 @@ import com.ecommerce.ecommerce.domain.Category;
 import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.repository.ProductRepository;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,6 +29,8 @@ public class ProductService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @CacheEvict(value = "products", allEntries = true)
     public Product createProduct(Product product, Long categoryId) {
