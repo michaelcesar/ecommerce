@@ -7,6 +7,8 @@ import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.repository.ProductRepository;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class ProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @CacheEvict(value = "products", allEntries = true)
     public Product createProduct(Product product, Long categoryId) {
 
         if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
@@ -48,16 +51,19 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @Cacheable(value = "products", key = "#id")
     public Product getProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
     }
 
+    @Cacheable(value = "products", key = "'page=' + #pageable.pageNumber + 'size=' + #pageable.pageSize + 'name=' + #name + 'minPrice=' + #minPrice + 'maxPrice=' + #maxPrice")
     public Page<ProductResponseDTO> getAllProducts(Pageable pageable, String name, BigDecimal minPrice, BigDecimal maxPrice) {
         Page<Product> products = productRepository.findAllByFilters(pageable, name, minPrice, maxPrice);
         return products.map(productMapper::toProductResponseDTO);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public Product updateProduct(Long id, Product updatedProduct) {
         Product existingProduct = getProductById(id);
 
