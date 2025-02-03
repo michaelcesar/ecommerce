@@ -2,6 +2,7 @@ package com.ecommerce.ecommerce.controller;
 
 import com.ecommerce.ecommerce.domain.DTOS.ProductRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.ProductResponseDTO;
+import com.ecommerce.ecommerce.domain.DTOS.UpdateStockRequestDTO;
 import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.services.ProductService;
 import jakarta.validation.Valid;
@@ -69,8 +70,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/estoque")
-    public ResponseEntity<ProductResponseDTO> updateStock(@PathVariable Long id, @RequestParam Integer quantity) {
-        var updatedProduct = productService.updateStock(id, quantity);
+    public ResponseEntity<ProductResponseDTO> updateStock(@PathVariable Long id, @RequestBody UpdateStockRequestDTO quantity) {
+        var updatedProduct = productService.updateStock(id, quantity.getQuantity());
         return ResponseEntity.ok(productMapper.toProductResponseDTO(updatedProduct));
     }
 

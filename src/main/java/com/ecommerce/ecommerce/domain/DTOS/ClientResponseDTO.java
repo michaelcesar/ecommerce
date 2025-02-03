@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Schema(description = "Client Response DTO")
@@ -23,4 +25,7 @@ public class ClientResponseDTO {
 
     @Schema(description = "Client cpf", example = "000.000.000-00")
     private String cpf;
+
+    @Schema(description = "Client address", example = "123 Main St, Springfield, IL")
+    private List<AddressResponseDTO> addresses;
 }

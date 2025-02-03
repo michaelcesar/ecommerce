@@ -3,7 +3,9 @@ package com.ecommerce.ecommerce.services;
 import com.ecommerce.ecommerce.domain.Client;
 import com.ecommerce.ecommerce.domain.DTOS.ClientRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.ClientResponseDTO;
+import com.ecommerce.ecommerce.mapper.AddressMapper;
 import com.ecommerce.ecommerce.mapper.ClientMapper;
+import com.ecommerce.ecommerce.repository.AddressRepository;
 import com.ecommerce.ecommerce.repository.ClientRepository;
 import com.ecommerce.ecommerce.utils.CPFValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,12 @@ public class ClientService {
     @Autowired
     private ClientMapper clientMapper;
 
+
     public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
         validateClient(clientRequestDTO);
 
         Client client = clientMapper.toClient(clientRequestDTO);
+
         Client savedClient = clientRepository.save(client);
         return clientMapper.toClientResponseDTO(savedClient);
     }

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Schema(description = "Client Request DTO")
@@ -24,4 +26,10 @@ public class ClientRequestDTO {
 
     @Schema(description = "Client password", example = "123")
     private String password;
+
+    @Schema(description = "List of addresses associated with the client")
+    private List<AddressResponseDTO> addresses;
+
+    @Schema(description = "List of orders associated with the client")
+    private List<OrderItemResponseDTO> items;
 }
