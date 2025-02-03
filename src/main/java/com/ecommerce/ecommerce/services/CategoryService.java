@@ -75,11 +75,16 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Transactional
     public void removeProductFromCategory(Long categoriaId, Long produtoId) {
         var category = getCategoryById(categoriaId);
         var product = productRepository.findById(produtoId)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+
         category.getProducts().remove(product);
+        product.getCategories().remove(category);
         categoryRepository.save(category);
+        productRepository.save(product);
     }
+
 }
