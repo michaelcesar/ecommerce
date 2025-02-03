@@ -1,10 +1,12 @@
 package com.ecommerce.ecommerce.services;
 
 import com.ecommerce.ecommerce.domain.Category;
+import com.ecommerce.ecommerce.domain.DTOS.CategoryResponseDTO;
 import com.ecommerce.ecommerce.domain.Product;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryRequestDTO;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
 import com.ecommerce.ecommerce.repository.ProductRepository;
+import com.ecommerce.ecommerce.mapper.CategoryMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

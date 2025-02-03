@@ -7,17 +7,16 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     @Mapping(target = "categoryName", expression = "java(product.getCategories() != null && !product.getCategories().isEmpty() ? product.getCategories().get(0).getName() : null)")
     ProductResponseDTO toProductResponseDTO(Product product);
 
-    Product toProduct(ProductRequestDTO productRequestDTO);
-
     List<ProductResponseDTO> toProductResponseDTOList(List<Product> products);
+
+    Product toProduct(ProductRequestDTO productRequestDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProductFromDTO(ProductRequestDTO productRequestDTO, @MappingTarget Product product);
 }
-

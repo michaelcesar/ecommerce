@@ -1,4 +1,5 @@
 package com.ecommerce.ecommerce.mapper;
+
 import com.ecommerce.ecommerce.domain.Category;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryRequestDTO;
 import com.ecommerce.ecommerce.domain.DTOS.CategoryResponseDTO;
@@ -6,10 +7,13 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ProductMapper.class)
 public interface CategoryMapper {
 
+    @Mapping(source = "products", target = "products")
     CategoryResponseDTO toCategoryDTO(Category category);
+
+    List<CategoryResponseDTO> toCategoryDTOList(List<Category> categories);
 
     @Mapping(target = "products", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -18,8 +22,6 @@ public interface CategoryMapper {
     @Mapping(target = "products", ignore = true)
     @Mapping(target = "id", ignore = true)
     Category toCategory(CategoryRequestDTO categoryRequestDTO);
-
-    List<CategoryResponseDTO> toCategoryDTOList(List<Category> categories);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)

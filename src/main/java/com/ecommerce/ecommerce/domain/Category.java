@@ -22,7 +22,7 @@ public class Category {
     @Column
     private String description;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     private List<Product> products = new ArrayList<>();
 
 }

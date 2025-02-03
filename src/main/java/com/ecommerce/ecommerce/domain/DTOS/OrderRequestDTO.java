@@ -14,13 +14,6 @@ import java.util.List;
 @Schema(description = "Order Request DTO")
 public class OrderRequestDTO {
 
-    @Schema(description = "Order date", example = "2025-01-01T10:00:00")
-    @NotNull(message = "Data do pedido é obrigatória")
-    private LocalDateTime orderDate;
-
-    @Schema(description = "Total value of the order", example = "250.75")
-    private BigDecimal totalValue;
-
     @Schema(description = "Client ID associated with the order", example = "1")
     @NotNull(message = "Cliente é obrigatório")
     private Long clientId;

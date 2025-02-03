@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,7 +41,6 @@ public class OrderService {
     @Transactional
     public Order createOrder(OrderRequestDTO requestDTO) {
         Order order = new Order();
-        order.setOrderDate(requestDTO.getOrderDate());
 
         Client client = clientRepository.findById(requestDTO.getClientId())
                 .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
@@ -73,6 +73,8 @@ public class OrderService {
         }
 
         order.setItems(items);
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderDate(LocalDateTime.now());
 
         BigDecimal totalValue = items.stream()
                 .map(OrderItem::getSubtotal)
