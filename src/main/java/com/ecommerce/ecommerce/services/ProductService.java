@@ -6,6 +6,7 @@ import com.ecommerce.ecommerce.domain.Category;
 import com.ecommerce.ecommerce.mapper.ProductMapper;
 import com.ecommerce.ecommerce.repository.ProductRepository;
 import com.ecommerce.ecommerce.repository.CategoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProductService {
 
     @Autowired
@@ -63,6 +65,7 @@ public class ProductService {
 
     @Cacheable(value = "products", key = "'page=' + #pageable.pageNumber + 'size=' + #pageable.pageSize + 'name=' + #name + 'minPrice=' + #minPrice + 'maxPrice=' + #maxPrice")
     public Page<ProductResponseDTO> getAllProducts(Pageable pageable, String name, BigDecimal minPrice, BigDecimal maxPrice) {
+        log.info("Buscando todos os produtos");
         Page<Product> products = productRepository.findAllByFilters(pageable, name, minPrice, maxPrice);
         return products.map(productMapper::toProductResponseDTO);
     }
